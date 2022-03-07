@@ -8,6 +8,7 @@ export const UserInput = styled.TextInput`
   padding-left: 4px;
   padding-right: 4px;
 `
+
 export const PostButton = styled.TouchableOpacity`
   margin-bottom: 5px;
   margin-top: 5px;
