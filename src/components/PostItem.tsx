@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Alert, Modal, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, Alert, Modal } from "react-native";
  
 import Icon from 'react-native-vector-icons/Feather';
 import api from "../services/api";
@@ -18,7 +18,6 @@ import {
  } 
   from "../style/postitem";
 
-
 export interface User {
   id: number;
   name: string;
@@ -34,14 +33,12 @@ interface PostItemProps {
   users: User[]
 }
 
-
 export function PostItem({body, userId, users, tittle, id, ...rest}: PostItemProps){
   const [ userName, setUserName] = useState('User Name')
   const [ userTrueName, setUserTrueName ] = useState('')
   const [ userEmail, setUserEmail ] = useState('')
   const [ editing, setEditing ] = useState(false)
   const [ newPost, setNewPost ] = useState('')
-
 
   function showName(userName: string){
     Alert.alert(
@@ -53,7 +50,6 @@ export function PostItem({body, userId, users, tittle, id, ...rest}: PostItemPro
       }
     ])
   }
-
 
   function handleRemovePost(id: number){
     Alert.alert('Remove Post', 'Are you sure?', [
@@ -70,13 +66,14 @@ export function PostItem({body, userId, users, tittle, id, ...rest}: PostItemPro
           })
         }
       }
-    ])
-    
+    ])   
   }
+
   function handleEditPost(){
     setEditing(true)
     setNewPost(body)
   }
+
   function submitEdit(newPost: string){
     if(newPost !== ''){
       axios.put(`/posts/${id}`, {
@@ -104,12 +101,10 @@ export function PostItem({body, userId, users, tittle, id, ...rest}: PostItemPro
     for( let i = 0; i < users.length; i++){
       if(users[i].id == userId){
         setUserName(users[i].username)
-        // setUserTrueName(users[i].name)
       }
     } 
     for( let i = 0; i < users.length; i++){
       if(users[i].id == userId){
-        // setUserName(users[i].username)
         setUserTrueName(users[i].name)
       }
     } 
@@ -119,6 +114,7 @@ export function PostItem({body, userId, users, tittle, id, ...rest}: PostItemPro
       }
     }
   }, [])
+  
   return(
     <View>
       <Post>
