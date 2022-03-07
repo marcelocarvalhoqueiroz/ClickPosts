@@ -39,6 +39,7 @@ export function PostAdd(){
       )
     }
   }
+  
   return(
     <AddContainer>
       <InputContainer>   

@@ -15,6 +15,7 @@ export interface User {
   username: string;
   email: string
 }
+
 interface PostListProps {
   posts: Post[],
   users: User[]
@@ -24,6 +25,7 @@ export function PostList({posts, users}: PostListProps){
   const postsOrder = posts.sort(function(a, b){
     return a.id - b.id
   })
+  
   return(
     <FlatList
       data={postsOrder}
