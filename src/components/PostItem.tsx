@@ -26,111 +26,75 @@ export interface User {
 }
 
 interface PostItemProps {
-  body: string;
-  userId: number;
-  id: number;
-  tittle: string;
-  users: User[]
+  body: string,
+  userName: string,
+  id: number,
+  remove: (id: number) => void,
+  edit: () => void
 }
 
-export function PostItem({body, userId, users, tittle, id, ...rest}: PostItemProps){
-  const [ userName, setUserName] = useState('User Name')
+export function PostItem({body, userName, id, edit, remove}: PostItemProps){
   const [ userTrueName, setUserTrueName ] = useState('')
-  const [ userEmail, setUserEmail ] = useState('')
   const [ editing, setEditing ] = useState(false)
   const [ newPost, setNewPost ] = useState('')
 
-  function showName(userName: string){
-    Alert.alert(
-      'User:', 
-      `Name: ${userName} | Email: ${userEmail}`, [
-      {
-        text: 'OK',
-        style: 'cancel'
-      }
-    ])
-  }
-
-  function handleRemovePost(id: number){
-    Alert.alert('Remove Post', 'Are you sure?', [
-      {
-        text: 'No',
-        style: 'cancel'
-      },
-      {
-        text: 'Yes',
-        style: 'destructive',
-        onPress: () => {
-          api.delete(`/posts/${id}`).then((res) => {
-            console.log(res.data)
-          })
-        }
-      }
-    ])   
-  }
-
-  function handleEditPost(){
+  function turnEdit(){
     setEditing(true)
     setNewPost(body)
   }
+  // function showName(userName: string){
+  //   Alert.alert(
+  //     'User:', 
+  //     `Name: ${userName} | Email: ${userEmail}`, [
+  //     {
+  //       text: 'OK',
+  //       style: 'cancel'
+  //     }
+  //   ])
+  // }
 
-  function submitEdit(newPost: string){
-    if(newPost !== ''){
-      axios.put(`/posts/${id}`, {
-        id: id,
-        tittle: tittle,
-        body: newPost,
-        userId: userId
-      })
-      setEditing(false)
-    }else{
-      Alert.alert(
-        `Error`,
-        `Need post's body`,
-        [
-          {
-            text: "OK"
-          }
-        ]
-      )
-    }
-    setNewPost('')
-  }
+  // function handleEditPost(){
+  //   setEditing(true)
+  //   setNewPost(body)
+  // }
 
-  useEffect(() => {
-    for( let i = 0; i < users.length; i++){
-      if(users[i].id == userId){
-        setUserName(users[i].username)
-      }
-    } 
-    for( let i = 0; i < users.length; i++){
-      if(users[i].id == userId){
-        setUserTrueName(users[i].name)
-      }
-    } 
-    for( let i = 0; i < users.length; i++){
-      if(users[i].id == userId){
-        setUserEmail(users[i].email)
-      }
-    }
-  }, [])
+  // function submitEdit(newPost: string){
+  //   if(newPost !== ''){
+  //     axios.put(`/posts/${id}`, {
+  //       id: id,
+  //       tittle: tittle,
+  //       body: newPost,
+  //       userId: userId
+  //     })
+  //     setEditing(false)
+  //   }else{
+  //     Alert.alert(
+  //       `Error`,
+  //       `Need post's body`,
+  //       [
+  //         {
+  //           text: "OK"
+  //         }
+  //       ]
+  //     )
+  //   }
+  //   setNewPost('')
+  // }
   
   return(
     <View>
       <Post>
-        <TouchableOpacity 
-        onPress={ () => showName(userTrueName)}
-        >
+        <TouchableOpacity>
           <UserName>{userName}</UserName>
         </TouchableOpacity>
         <Text>{body}</Text>
         <PostButtons>
           <TouchableOpacity
-          onPress={() => handleEditPost()}>
+          onPress={() => turnEdit()}>
             <Icon name="edit" size={24} color="#50398b"/>
           </TouchableOpacity>
           <TouchableOpacity
-          onPress={ () => handleRemovePost(id)}>
+          onPress={ () => remove(id)}>
             <Icon name="trash" size={24} color="#50398b"/>
           </TouchableOpacity>
         </PostButtons>
@@ -148,7 +112,7 @@ export function PostItem({body, userId, users, tittle, id, ...rest}: PostItemPro
           </EditBox>
           <EditButtons>
             <Submit
-            onPress={ () => submitEdit(newPost)}
+            onPress={ () => edit()}
             >
               <Icon name="save" size={38} color="#50398b"/>
             </Submit>
